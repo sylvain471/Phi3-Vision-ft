@@ -9,7 +9,6 @@ deepspeed --master_port 29600 train.py \
     --model_id microsoft/Phi-3-vision-128k-instruct \
     --data_path /path/to/your/training/data.json \
     --image_folder /path/to/your/image/folder \
-    --group_by_modality_length False \
     --tune_img_projector True \
     --freeze_vision_tower False \
     --bf16 True \

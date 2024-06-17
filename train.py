@@ -75,7 +75,6 @@ class TrainingArguments(transformers.TrainingArguments):
     lora_weight_path: str = ""
     lora_bias: str = "none"
     non_lora_lr: Optional[float] = None
-    group_by_modality_length: bool = field(default=False)
     lora_namespan_exclude: str = field(default=None, metadata={"help": "List of namespan to exclude for LoRA"})
     num_lora_modules: int = -1
 
@@ -234,8 +233,7 @@ def find_target_linear_names(model, num_lora_modules=-1, lora_namespan_exclude=[
     if num_lora_modules > 0:
         lora_module_names = lora_module_names[-num_lora_modules:]
     if verbose:
-        # rank0_print(f"Found {len(lora_module_names)} lora modules: {lora_module_names}")
-        print(f"Found {len(lora_module_names)} lora modules: {lora_module_names}")
+        rank0_print(f"Found {len(lora_module_names)} lora modules: {lora_module_names}")
     return lora_module_names
 
 
@@ -325,8 +323,6 @@ def make_supervised_data_module(processor, data_args):
 
 def train():
     global local_rank
-    
-    ACCELERATE_USE_FSDP = os.environ.get("ACCELERATE_USE_FSDP", "false") == "true"
 
     parser = transformers.HfArgumentParser(
         (ModelArguments, DataArguments, TrainingArguments))
@@ -337,9 +333,6 @@ def train():
 
     local_rank = training_args.local_rank
     compute_dtype = (torch.float16 if training_args.fp16 else (torch.bfloat16 if training_args.bf16 else torch.float32))
-
-    # rank0_print('compute_dtype', compute_dtype)
-    # print(compute_dtype)
 
     bnb_model_from_pretrained_args = {}
     if training_args.bits in [4,8]:
@@ -381,14 +374,11 @@ def train():
         from peft import prepare_model_for_kbit_training
         model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=training_args.gradient_checkpointing, gradient_checkpointing_kwargs={"use_reentrant": False})
     if training_args.gradient_checkpointing:
-        if ACCELERATE_USE_FSDP:
-            warnings.warn("``gradient_checkpointing`` may not work well with ``fsdp``. We will enable it for you. Please be sure you know what you are doing and aware of the potential errors.")
         model.enable_input_require_grads()
-        model.model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+        model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
         rank0_print("Gradient checkpointing:", model.model.gradient_checkpointing)
 
     if training_args.lora_enable:
-        # lora_namespan_exclude = eval(training_args.lora_namespan_exclude)
         lora_namespan_exclude = training_args.lora_namespan_exclude
         peft_config = LoraConfig(
             r=training_args.lora_rank,
@@ -405,7 +395,6 @@ def train():
                 model.to(torch.float16)
         rank0_print("Adding LoRA to the model...")
         model = get_peft_model(model, peft_config)
-        # print(model)
 
     processor = Phi3VProcessor.from_pretrained(model_args.model_id,
                                                cache_dir=training_args.cache_dir, 
@@ -490,7 +479,6 @@ def train():
 
     trainer = Phi3VTrainer(
         model=model,
-        # tokenizer=processor.tokenizer,
         processor=processor,
         args=training_args,
         **data_module
