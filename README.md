@@ -194,7 +194,7 @@ If you find this repository userful in your project, please consider giving a st
   title = {Phi-3-vision-ft},
   year = {2024},
   publisher = {GitHub},
-  url = {https://github.com/2U1/Phi3V-Finetuning},
+  url = {https://github.com/2U1/Phi3-Vision-ft},
   note = {GitHub repository, forked from \cite{phi3vfinetuning2023}},
 }
 ```
