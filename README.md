@@ -177,6 +177,8 @@ python cli.py \
 - [x] Add support for FSDP
 - [x] Add support for simultaneously finetuning `img_projector`
 - [x] Add support for full finetuning
+- [ ] Add inference in CLI env
+- [ ] Add demo with Reflex
 - [ ] Add support for grounded finetuning
 - [ ] Add support for multi-image finetuning
 - [ ] More advanced PEFT method (e.g., DoRA)
