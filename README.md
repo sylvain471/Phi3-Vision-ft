@@ -1,11 +1,10 @@
-# Training Phi3-V with PEFT
+# Fine-tuning Phi3-Vision
 
-This repository contains a script for training the [Phi3-V model](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct) with Parameter-Efficient Fine-Tuning (PEFT) techniques using various configurations and options.
+This repository contains a script for training the [Phi3-Vision model](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct).
 
 ## Table of Contents
 
-- [Training Phi3-V with PEFT](#training-phi3-v-with-peft)
-  - [Table of Contents](#table-of-contents)
+- [Fine-tuning Phi3-Vision](#fine-tuning-phi3-vision)
   - [Installation](#installation)
     - [Using `requirements.txt`](#using-requirementstxt)
     - [Using `environment.yml`](#using-environmentyml)
@@ -13,18 +12,17 @@ This repository contains a script for training the [Phi3-V model](https://huggin
   - [Usage](#usage)
   - [Arguments](#arguments)
   - [Dataset Preparation](#dataset-preparation)
-  - [TODO](#todo)
   - [License](#license)
   - [Citation](#citation)
+  - [Acknowledgement](#acknowledgement)
 
 ## Supported Features
 
-- Training on the mixture of NLP data and vision-language data
 - Flexible selection of LoRA target modules
 - Deepspeed Zero-2
 - Deepspeed Zero-3
-- PyTorch FSDP
-- Gradient checkpointing (only compatible with ZeRO-3 for now)
+- Gradient checkpointing
+- LoRA
 - QLoRA
 - Disable/enable Flash Attention 2
 - Fine-tuning `img_projector` and `vision_tower` simultaneously
@@ -67,18 +65,37 @@ huggingface-cli download microsoft/Phi-3-vision-128k-instruct --local-dir Phi-3-
 
 To run the training script, use the following command:
 
+### Full Finetuning
+
 ```bash
-bash scripts/train.sh
+bash scripts/finetune.sh
 ```
 
-**Note:** Remember to replace the paths in `train.sh` with your specific paths.
+### Finetune with LoRA
+
+If you want to train with LoRA:
+
+```bash
+bash scripts/finetune_lora.sh
+```
+
+#### Merge LoRA Weights
+
+```
+python merge_lora_weights.py \
+    --model-path /Your/path/to/saved/weights \
+    --model-base microsoft/Phi-3-vision-128k-instruct \
+    --save-model-path /Your/path/to/save
+```
+
+**Note:** Remember to replace the paths in `finetune.sh` or `finetune_lora.sh` with your specific paths.
 
 ## Arguments
 
 - `--deepspeed` (str): Path to DeepSpeed config file (default: "scripts/zero2.json").
 - `--data_path` (str): Path to the LLaVA formatted training data (a JSON file). **(Required)**
 - `--image_folder` (str): Path to the images folder as referenced in the LLaVA formatted training data. **(Required)**
-- `--model_id` (str): Path to the Phi3-V model. **(Required)**
+- `--model_id` (str): Path to the Phi3-vision model. **(Required)**
 - `--output_dir` (str): Output directory for model checkpoints (default: "output/test_train").
 - `--num_train_epochs` (int): Number of training epochs (default: 1).
 - `--per_device_train_batch_size` (int): Training batch size per GPU per forwarding step.
@@ -146,15 +163,6 @@ The script requires a dataset formatted according to the LLaVA specification. Th
 
 </details>
 
-## Merge LoRA Weights
-
-```
-python merge_lora_weights.py \
-    --model-path /Your/path/to/saved/weights \
-    --model-base microsoft/Phi-3-vision-128k-instruct \
-    --save-model-path /Your/path/to/save
-```
-
 ## Inference with CLI
 
 ```
@@ -167,4 +175,35 @@ python cli.py \
 
 This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE) file for details.
 
-This project borrowed code from [LLaVA](https://github.com/haotian-liu/LLaVA), [Microsoft Phi-3-vision-128k-instruct](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct) and [Mipha](https://github.com/zhuyiche/llava-phi). Thanks to projects for their contributions.
+## Citation
+
+If you find this repository userful in your project, please consider giving a star and citing:
+
+```bibtex
+@misc{phi3vfinetuning2023,
+  author = {Gai Zhenbiao and Shao Zhenwei},
+  title = {Phi3V-Finetuning},
+  year = {2023},
+  publisher = {GitHub},
+  url = {https://github.com/GaiZhenbiao/Phi3V-Finetuning},
+  note = {GitHub repository},
+}
+
+@misc{phi3-vision-ft,
+  author = {Yuwon Lee},
+  title = {Phi-3-vision-ft},
+  year = {2024},
+  publisher = {GitHub},
+  url = {https://github.com/2U1/Phi3V-Finetuning},
+  note = {GitHub repository, forked from \cite{phi3vfinetuning2023}},
+}
+```
+
+## Acknowledgement
+
+This project is based on
+
+- [LLaVA](https://github.com/haotian-liu/LLaVA): An amazing open-source project of LMM.
+- [Mipha](https://github.com/zhuyiche/llava-phi): Open-source projcet of SMM with amazing capabilites.
+- [Microsoft Phi-3-vision-128k-instruct](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct): Awesome pretrained SMM using phi3.
+- [Phi3V-Finetuning](https://github.com/GaiZhenbiao/Phi3V-Finetuning): Open-source project for finetuning phi-3-vision.
