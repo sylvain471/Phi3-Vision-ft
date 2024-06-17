@@ -1,9 +1,10 @@
 deepspeed --master_port 29600 train.py \
     --lora_enable True \
-    --lora_namespan_exclude "['self_attn', 'lm_head']" \
+    --lora_namespan_exclude "['lm_head']" \
     --lora_rank 128 \
     --lora_alpha 256 \
     --lora_dropout 0.05 \
+    --num_lora_modules -1 \
     --deepspeed scripts/zero3.json \
     --model_id microsoft/Phi-3-vision-128k-instruct \
     --data_path /path/to/your/training/data.json \

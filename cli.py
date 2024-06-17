@@ -47,31 +47,7 @@ def load_image(image_file):
     return image
 
 def main(args):
-
-    # This for the model that are fine-tuned with the original code
-    # model_id = args.model_base
-    # model = AutoModelForCausalLM.from_pretrained(model_id, device_map=args.device, trust_remote_code=True, torch_dtype=torch.float16)
-
-    # if args.model_path:
-    #     peft_model_id = args.model_path
-    #     model.load_adapter(peft_model_id)
-
-    # processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
-
-
-    # flash_attention="flash_attention_2"
-
-    # if args.disable_flash_attention:
-    #     flash_attention = "eager"
-
-    # if args.model_path:
-    #     model = Phi3VForCausalLM.from_pretrained(args.model_path, device_map=args.device, torch_dtype=torch.float16, _attn_implementation=flash_attention)
-    #     processor = Phi3VProcessor.from_pretrained(args.model_path)
-
-    # else:
-    #     model = AutoModelForCausalLM.from_pretrained(args.model_base, device_map=args.device, torch_dtype=torch.float16, _attn_implementation=flash_attention)
-    #     processor = AutoProcessor.from_pretrained(model_id)
-
+    
     use_flash_attn = True
 
     if args.disable_flash_attention:

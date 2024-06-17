@@ -1,7 +1,3 @@
-<div align="right">
-  English | <a title="简体中文" href="./readme/README_zhcn.md">简体中文</a></a>
-</div>
-
 # Training Phi3-V with PEFT
 
 This repository contains a script for training the [Phi3-V model](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct) with Parameter-Efficient Fine-Tuning (PEFT) techniques using various configurations and options.
@@ -66,10 +62,6 @@ pip install -U "huggingface_hub[cli]"
 ```bash
 huggingface-cli download microsoft/Phi-3-vision-128k-instruct --local-dir Phi-3-vision-128k-instruct --resume-download
 ```
-
-<!-- 3. Replace the modeling files:
-
-Replace the modeling files under `Phi-3-vision-128k-instruct` with the ones under `overwrites/Phi-3-vision-128k-instruct`. -->
 
 ## Usage
 
@@ -171,37 +163,8 @@ python cli.py \
  --image-file /Path/to/image/
 ```
 
-## TODO
-
-- [x] Add support for DeepSpeed ZeRO-3.
-- [x] Add support for FSDP
-- [x] Add support for simultaneously finetuning `img_projector`
-- [x] Add support for full finetuning
-- [ ] Add inference in CLI env
-- [ ] Add demo with Reflex
-- [ ] Add support for grounded finetuning
-- [ ] Add support for multi-image finetuning
-- [ ] More advanced PEFT method (e.g., DoRA)
-- [ ] FSDP with ActivationCheckpointing Wrapper
-- [ ] Intergration with [Chuanhu Chat](https://github.com/GaiZhenbiao/ChuanhuChatGPT)
-
 ## License
 
 This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE) file for details.
 
-This project borrowed code from [LLaVA](https://github.com/haotian-liu/LLaVA) and [Microsoft Phi-3-vision-128k-instruct](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct). Thanks to both projects for their contributions.
-
-## Citation
-
-If you use this codebase in your work, please cite this project:
-
-```bibtex
-@misc{phi3vfinetuning2023,
-  author = {Gai Zhenbiao & Shao Zhenwei},
-  title = {Phi3V-Finetuning},
-  year = {2023},
-  publisher = {GitHub},
-  url = {https://github.com/GaiZhenbiao/Phi3V-Finetuning},
-  note = {GitHub repository},
-}
-```
+This project borrowed code from [LLaVA](https://github.com/haotian-liu/LLaVA), [Microsoft Phi-3-vision-128k-instruct](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct) and [Mipha](https://github.com/zhuyiche/llava-phi). Thanks to projects for their contributions.
