@@ -45,7 +45,7 @@ class TrainingArguments(transformers.TrainingArguments):
     adam_epsilon: float = field(default=1e-7)
 
     freeze_vision_tower: bool = field(default=False)
-    tune_img_projector: bool = field(default=False)
+    tune_img_projector: bool = field(default=True)
     disable_flash_attn2: bool = field(default=False)
 
     max_seq_length: int = field(

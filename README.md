@@ -31,6 +31,8 @@ This repository contains a script for training the [Phi3-V model](https://huggin
 - Gradient checkpointing (only compatible with ZeRO-3 for now)
 - QLoRA
 - Disable/enable Flash Attention 2
+- Fine-tuning `img_projector` and `vision_tower` simultaneously
+- Full-finetuning
 
 ## Installation
 
@@ -81,20 +83,24 @@ bash scripts/train.sh
 
 ## Arguments
 
+- `--deepspeed` (str): Path to DeepSpeed config file (default: "scripts/zero2.json").
 - `--data_path` (str): Path to the LLaVA formatted training data (a JSON file). **(Required)**
 - `--image_folder` (str): Path to the images folder as referenced in the LLaVA formatted training data. **(Required)**
 - `--model_id` (str): Path to the Phi3-V model. **(Required)**
-- `--proxy` (str): Proxy settings (default: None).
 - `--output_dir` (str): Output directory for model checkpoints (default: "output/test_train").
 - `--num_train_epochs` (int): Number of training epochs (default: 1).
 - `--per_device_train_batch_size` (int): Training batch size per GPU per forwarding step.
 - `--gradient_accumulation_steps` (int): Gradient accumulation steps (default: 4).
-- `--deepspeed_config` (str): Path to DeepSpeed config file (default: "scripts/zero2.json").
+- `--freeze_vision_tower` (bool): Option to freeze vision_model (default: False)
+- `--tune_img_projector` (bool): Option to finetune img_projector (default: True)
 - `--num_lora_modules` (int): Number of target modules to add LoRA (-1 means all layers).
+- `--non_lora_lr` (float): Learning rate for non lora modules.
+- `--learning_rate` (float): Learning rate for lora_modules.
+- `--bf16` (bool): Option for using bfloat16.
 - `--lora_namespan_exclude` (str): Exclude modules with namespans to add LoRA.
 - `--max_seq_length` (int): Maximum sequence length (default: 3072).
-- `--quantization` (flag): Enable quantization.
-- `--disable_flash_attn2` (flag): Disable Flash Attention 2.
+- `--bits` (int): Quantization bits (default: 16).
+- `--disable_flash_attn2` (bool): Disable Flash Attention 2.
 - `--report_to` (str): Reporting tool (choices: 'tensorboard', 'wandb', 'none') (default: 'tensorboard').
 - `--logging_dir` (str): Logging directory (default: "./tf-logs").
 - `--lora_rank` (int): LoRA rank (default: 128).
@@ -145,13 +151,30 @@ The script requires a dataset formatted according to the LLaVA specification. Th
   ...
 ]
 ```
+
 </details>
 
+## Merge LoRA Weights
+
+```
+python merge_lora_weights.py \
+    --model-path /Your/path/to/saved/weights \
+    --model-base microsoft/Phi-3-vision-128k-instruct \
+    --save-model-path /Your/path/to/save
+```
+
+## Inference with CLI
+
+python cli.py \
+ --model-path /path/to/merged/weight \
+ --image-file /Path/to/image/
+
 ## TODO
+
 - [x] Add support for DeepSpeed ZeRO-3.
 - [x] Add support for FSDP
-- [ ] Add support for simultaneously finetuning `img_projector`
-- [ ] Add support for full finetuning
+- [x] Add support for simultaneously finetuning `img_projector`
+- [x] Add support for full finetuning
 - [ ] Add support for grounded finetuning
 - [ ] Add support for multi-image finetuning
 - [ ] More advanced PEFT method (e.g., DoRA)
