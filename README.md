@@ -165,9 +165,11 @@ python merge_lora_weights.py \
 
 ## Inference with CLI
 
+```
 python cli.py \
  --model-path /path/to/merged/weight \
  --image-file /Path/to/image/
+```
 
 ## TODO
 
