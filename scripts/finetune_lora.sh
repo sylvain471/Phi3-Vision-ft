@@ -16,8 +16,8 @@ deepspeed --master_port 29600 train.py \
     --num_train_epochs 1 \
     --per_device_train_batch_size 4 \
     --gradient_accumulation_steps 4 \
-    --learning_rate 2e-4 \
-    --non_lora_lr 2e-5 \
+    --learning_rate 2e-5 \
+    --non_lora_lr 2e-6 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \

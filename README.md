@@ -118,6 +118,8 @@ python merge_lora_weights.py \
 - `--logging_steps` (int): Logging steps (default: 1).
 - `--dataloader_num_workers` (int): Number of data loader workers (default: 4).
 
+**Note:** The learning rate of `vision_model` should be 10x or 5x smaller than the `language_model`.
+
 ## Dataset Preparation
 
 The script requires a dataset formatted according to the LLaVA specification. The dataset should be a JSON file where each entry contains information about conversations and images. Ensure that the image paths in the dataset match the provided `--image_folder`.
@@ -171,13 +173,19 @@ python cli.py \
  --image-file /Path/to/image/
 ```
 
+## TODO
+
+- [x] Setting different learning rate for `img_projector` and `vision_model` in LoRA
+- [ ] Setting different learning rate for `img_projector` and `vision_model` in Full-Finetuning
+- [ ] Demo with WebUI
+
 ## License
 
 This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE) file for details.
 
 ## Citation
 
-If you find this repository userful in your project, please consider giving a star and citing:
+If you find this repository useful in your project, please consider giving a star and citing:
 
 ```bibtex
 @misc{phi3vfinetuning2023,
