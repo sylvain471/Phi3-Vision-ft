@@ -19,13 +19,12 @@ This repository contains a script for training the [Phi3-Vision model](https://h
 ## Supported Features
 
 - Flexible selection of LoRA target modules
-- Deepspeed Zero-2
-- Deepspeed Zero-3
+- Deepspeed
 - Gradient checkpointing
 - LoRA
 - QLoRA
 - Disable/enable Flash Attention 2
-- Fine-tuning `img_projector` and `vision_tower` simultaneously
+- Finetuning `img_projector` and `vision_tower` simultaneously
 - Full-finetuning
 
 ## Installation
@@ -107,7 +106,7 @@ python merge_lora_weights.py \
 - `--learning_rate` (float): Learning rate for lora modules.
 - `--bf16` (bool): Option for using bfloat16.
 - `--lora_namespan_exclude` (str): Exclude modules with namespans to add LoRA.
-- `--max_seq_length` (int): Maximum sequence length (default: 3072).
+- `--max_seq_length` (int): Maximum sequence length (defaut: 128K).
 - `--bits` (int): Quantization bits (default: 16).
 - `--disable_flash_attn2` (bool): Disable Flash Attention 2.
 - `--report_to` (str): Reporting tool (choices: 'tensorboard', 'wandb', 'none') (default: 'tensorboard').
@@ -118,7 +117,7 @@ python merge_lora_weights.py \
 - `--logging_steps` (int): Logging steps (default: 1).
 - `--dataloader_num_workers` (int): Number of data loader workers (default: 4).
 
-**Note:** The learning rate of `vision_model` should be 10x or 5x smaller than the `language_model`.
+**Note:** The learning rate of `vision_model` should be 10x ~ 5x smaller than the `language_model`.
 
 ## Dataset Preparation
 
@@ -173,10 +172,13 @@ python cli.py \
  --image-file /Path/to/image/
 ```
 
+You can set some other generation configs like `repetition_penalty`, `temperature` etc.
+
 ## TODO
 
 - [ ] Setting different learning rate for `img_projector` and `vision_model`
 - [ ] Demo with WebUI
+- [ ] Save to safe_tensor format
 
 ## License
 
