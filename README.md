@@ -4,17 +4,13 @@ This repository contains a script for training the [Phi3-Vision model](https://h
 
 ## Table of Contents
 
-- [Fine-tuning Phi3-Vision](#fine-tuning-phi3-vision)
-  - [Installation](#installation)
-    - [Using `requirements.txt`](#using-requirementstxt)
-    - [Using `environment.yml`](#using-environmentyml)
-  - [Model Download](#model-download)
-  - [Usage](#usage)
-  - [Arguments](#arguments)
-  - [Dataset Preparation](#dataset-preparation)
-  - [License](#license)
-  - [Citation](#citation)
-  - [Acknowledgement](#acknowledgement)
+- [Installation](#installation)
+  - [Using `requirements.txt`](#using-requirementstxt)
+  - [Using `environment.yml`](#using-environmentyml)
+- [Model Download](#model-download)
+- [Dataset Preparation](#dataset-preparation)
+- [Training](#training)
+- [Inference](#inference)
 
 ## Supported Features
 
@@ -59,65 +55,6 @@ pip install -U "huggingface_hub[cli]"
 ```bash
 huggingface-cli download microsoft/Phi-3-vision-128k-instruct --local-dir Phi-3-vision-128k-instruct --resume-download
 ```
-
-## Usage
-
-To run the training script, use the following command:
-
-### Full Finetuning
-
-```bash
-bash scripts/finetune.sh
-```
-
-### Finetune with LoRA
-
-If you want to train with LoRA:
-
-```bash
-bash scripts/finetune_lora.sh
-```
-
-#### Merge LoRA Weights
-
-```
-python merge_lora_weights.py \
-    --model-path /Your/path/to/saved/weights \
-    --model-base microsoft/Phi-3-vision-128k-instruct \
-    --save-model-path /Your/path/to/save
-```
-
-**Note:** Remember to replace the paths in `finetune.sh` or `finetune_lora.sh` with your specific paths.
-
-## Arguments
-
-- `--deepspeed` (str): Path to DeepSpeed config file (default: "scripts/zero2.json").
-- `--data_path` (str): Path to the LLaVA formatted training data (a JSON file). **(Required)**
-- `--image_folder` (str): Path to the images folder as referenced in the LLaVA formatted training data. **(Required)**
-- `--model_id` (str): Path to the Phi3-vision model. **(Required)**
-- `--output_dir` (str): Output directory for model checkpoints (default: "output/test_train").
-- `--num_train_epochs` (int): Number of training epochs (default: 1).
-- `--per_device_train_batch_size` (int): Training batch size per GPU per forwarding step.
-- `--gradient_accumulation_steps` (int): Gradient accumulation steps (default: 4).
-- `--freeze_vision_tower` (bool): Option to freeze vision_model (default: False)
-- `--tune_img_projector` (bool): Option to finetune img_projector (default: True)
-- `--num_lora_modules` (int): Number of target modules to add LoRA (-1 means all layers).
-- `--multimodal_lr` (float): Learning rate for multimodal modules (`vision_tower` and `img_projection`)
-- `--learning_rate` (float): Learning rate for lora modules.
-- `--bf16` (bool): Option for using bfloat16.
-- `--lora_namespan_exclude` (str): Exclude modules with namespans to add LoRA.
-- `--max_seq_length` (int): Maximum sequence length (defaut: 128K).
-- `--bits` (int): Quantization bits (default: 16).
-- `--disable_flash_attn2` (bool): Disable Flash Attention 2.
-- `--report_to` (str): Reporting tool (choices: 'tensorboard', 'wandb', 'none') (default: 'tensorboard').
-- `--logging_dir` (str): Logging directory (default: "./tf-logs").
-- `--lora_rank` (int): LoRA rank (default: 128).
-- `--lora_alpha` (int): LoRA alpha (default: 256).
-- `--lora_dropout` (float): LoRA dropout (default: 0.05).
-- `--logging_steps` (int): Logging steps (default: 1).
-- `--dataloader_num_workers` (int): Number of data loader workers (default: 4).
-
-**Note:** The learning rate of `vision_model` should be 10x ~ 5x smaller than the `language_model`.
 
 ## Dataset Preparation
 
@@ -164,12 +101,76 @@ The script requires a dataset formatted according to the LLaVA specification. Th
 
 </details>
 
-## Inference with CLI
+## Training
+
+To run the training script, use the following command:
+
+### Full Finetuning
+
+```bash
+bash scripts/finetune.sh
+```
+
+### Finetune with LoRA
+
+If you want to train with LoRA:
+
+```bash
+bash scripts/finetune_lora.sh
+```
+
+<details>
+<summary>Training arguments</summary>
+
+- `--deepspeed` (str): Path to DeepSpeed config file (default: "scripts/zero2.json").
+- `--data_path` (str): Path to the LLaVA formatted training data (a JSON file). **(Required)**
+- `--image_folder` (str): Path to the images folder as referenced in the LLaVA formatted training data. **(Required)**
+- `--model_id` (str): Path to the Phi3-vision model. **(Required)**
+- `--output_dir` (str): Output directory for model checkpoints (default: "output/test_train").
+- `--num_train_epochs` (int): Number of training epochs (default: 1).
+- `--per_device_train_batch_size` (int): Training batch size per GPU per forwarding step.
+- `--gradient_accumulation_steps` (int): Gradient accumulation steps (default: 4).
+- `--freeze_vision_tower` (bool): Option to freeze vision_model (default: False)
+- `--tune_img_projector` (bool): Option to finetune img_projector (default: True)
+- `--num_lora_modules` (int): Number of target modules to add LoRA (-1 means all layers).
+- `--multimodal_lr` (float): Learning rate for multimodal modules (`vision_tower` and `img_projection`)
+- `--learning_rate` (float): Learning rate for language module.
+- `--bf16` (bool): Option for using bfloat16.
+- `--lora_namespan_exclude` (str): Exclude modules with namespans to add LoRA.
+- `--max_seq_length` (int): Maximum sequence length (defaut: 128K).
+- `--bits` (int): Quantization bits (default: 16).
+- `--disable_flash_attn2` (bool): Disable Flash Attention 2.
+- `--report_to` (str): Reporting tool (choices: 'tensorboard', 'wandb', 'none') (default: 'tensorboard').
+- `--logging_dir` (str): Logging directory (default: "./tf-logs").
+- `--lora_rank` (int): LoRA rank (default: 128).
+- `--lora_alpha` (int): LoRA alpha (default: 256).
+- `--lora_dropout` (float): LoRA dropout (default: 0.05).
+- `--logging_steps` (int): Logging steps (default: 1).
+- `--dataloader_num_workers` (int): Number of data loader workers (default: 4).
+
+**Note:** The learning rate of `vision_model` should be 10x ~ 5x smaller than the `language_model`.
+
+</details>
+
+#### Merge LoRA Weights
+
+```
+python merge_lora_weights.py \
+    --model-path /Your/path/to/saved/weights \
+    --model-base microsoft/Phi-3-vision-128k-instruct \
+    --save-model-path /Your/path/to/save
+```
+
+**Note:** Remember to replace the paths in `finetune.sh` or `finetune_lora.sh` with your specific paths.
+
+## Inference
+
+### CLI Inference
 
 ```
 python cli.py \
  --model-path /path/to/merged/weight \
- --image-file /Path/to/image/
+ --image-file /Path/to/image
 ```
 
 You can set some other generation configs like `repetition_penalty`, `temperature` etc.
