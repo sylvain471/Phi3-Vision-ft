@@ -103,8 +103,8 @@ python merge_lora_weights.py \
 - `--freeze_vision_tower` (bool): Option to freeze vision_model (default: False)
 - `--tune_img_projector` (bool): Option to finetune img_projector (default: True)
 - `--num_lora_modules` (int): Number of target modules to add LoRA (-1 means all layers).
-- `--non_lora_lr` (float): Learning rate for non lora modules.
-- `--learning_rate` (float): Learning rate for lora_modules.
+- `--multimodal_lr` (float): Learning rate for multimodal modules (`vision_tower` and `img_projection`)
+- `--learning_rate` (float): Learning rate for lora modules.
 - `--bf16` (bool): Option for using bfloat16.
 - `--lora_namespan_exclude` (str): Exclude modules with namespans to add LoRA.
 - `--max_seq_length` (int): Maximum sequence length (default: 3072).
@@ -175,8 +175,7 @@ python cli.py \
 
 ## TODO
 
-- [x] Setting different learning rate for `img_projector` and `vision_model` in LoRA
-- [ ] Setting different learning rate for `img_projector` and `vision_model` in Full-Finetuning
+- [ ] Setting different learning rate for `img_projector` and `vision_model`
 - [ ] Demo with WebUI
 
 ## License

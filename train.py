@@ -74,7 +74,7 @@ class TrainingArguments(transformers.TrainingArguments):
     lora_dropout: float = 0.05
     lora_weight_path: str = ""
     lora_bias: str = "none"
-    non_lora_lr: Optional[float] = None
+    multimodal_lr: Optional[float] = None
     lora_namespan_exclude: str = field(default=None, metadata={"help": "List of namespan to exclude for LoRA"})
     num_lora_modules: int = -1
 
@@ -453,7 +453,7 @@ def train():
         if training_args.bits in [4, 8]:
             model.model.vision_embed_tokens.img_processor.to(dtype=compute_dtype, device=training_args.device)
 
-    model.config.non_lora_lr = training_args.non_lora_lr
+    model.config.multimodal_lr = training_args.multimodal_lr
 
     if training_args.bits in [4, 8]:
         from peft.tuners.lora import LoraLayer
