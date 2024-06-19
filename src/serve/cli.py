@@ -112,7 +112,7 @@ def main(args):
                 pad_token_id=processor.tokenizer.eos_token_id,
                 stopping_criteria=[stopping_criteria]
             )
-
+        generate_ids = generate_ids[:, inputs['input_ids'].shape[1]:]
         outputs = processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
         messages.append({"role":"assistant", "content": outputs})
 
