@@ -187,7 +187,7 @@ This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE
 
 ## Citation
 
-If you find this repository useful in your project, please consider giving a star and citing:
+If you find this repository useful in your project, please consider giving a :star: and citing:
 
 ```bibtex
 @misc{phi3vfinetuning2023,
