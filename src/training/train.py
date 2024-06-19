@@ -199,7 +199,7 @@ def train():
         **data_module
     )
 
-    # trainer.train()
+    trainer.train()
 
     trainer.save_state()
 

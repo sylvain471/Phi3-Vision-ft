@@ -6,7 +6,7 @@ This repository contains a script for training the [Phi3-Vision model](https://h
 
 - [Installation](#installation)
   - [Using `requirements.txt`](#using-requirementstxt)
-  - [Using `environment.yml`](#using-environmentyml)
+  - [Using `environment.yaml`](#using-environmentyaml)
 - [Model Download](#model-download)
 - [Dataset Preparation](#dataset-preparation)
 - [Training](#training)
