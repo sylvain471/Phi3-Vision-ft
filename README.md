@@ -33,10 +33,10 @@ Install the required packages using either `requirements.txt` or `environment.ym
 pip install -r requirements.txt
 ```
 
-### Using `environment.yml`
+### Using `environment.yaml`
 
 ```bash
-conda env create -f environment.yml
+conda env create -f environment.yaml
 conda activate phi3v
 ```
 
