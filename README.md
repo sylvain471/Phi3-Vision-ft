@@ -155,7 +155,7 @@ bash scripts/finetune_lora.sh
 #### Merge LoRA Weights
 
 ```
-python merge_lora_weights.py \
+python src/merge_lora_weights.py \
     --model-path /Your/path/to/saved/weights \
     --model-base microsoft/Phi-3-vision-128k-instruct \
     --save-model-path /Your/path/to/save
@@ -168,7 +168,7 @@ python merge_lora_weights.py \
 ### CLI Inference
 
 ```
-python cli.py \
+python -m src.serve.cli \
  --model-path /path/to/merged/weight \
  --image-file /Path/to/image
 ```

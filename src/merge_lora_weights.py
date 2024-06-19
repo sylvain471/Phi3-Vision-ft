@@ -1,5 +1,5 @@
 import argparse
-from .utils import get_model_name_from_path, load_pretrained_model
+from utils import get_model_name_from_path, load_pretrained_model
 
 def merge_lora(args):
     model_name = get_model_name_from_path(args.model_path)

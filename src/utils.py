@@ -1,8 +1,16 @@
-from phi3_vision import Phi3VForCausalLM, Phi3VConfig, Phi3VProcessor
+from src.phi3_vision import Phi3VForCausalLM, Phi3VConfig, Phi3VProcessor
 from peft import PeftModel
 import torch
 from transformers import BitsAndBytesConfig
 import warnings
+import os
+
+def disable_torch_init():
+    """
+    Disable the redundant torch default initialization to accelerate model creation.
+    """
+    setattr(torch.nn.Linear, "reset_parameters", lambda self: None)
+    setattr(torch.nn.LayerNorm, "reset_parameters", lambda self: None)
 
 # This code is borrowed from LLaVA
 def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, load_4bit=False, 

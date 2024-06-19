@@ -1,4 +1,6 @@
-deepspeed --master_port 29600 src/training/train.py \
+#!/bin/bash
+
+deepspeed src/training/train.py \
     --deepspeed scripts/zero3.json \
     --model_id microsoft/Phi-3-vision-128k-instruct \
     --data_path /path/to/your/training/data.json \

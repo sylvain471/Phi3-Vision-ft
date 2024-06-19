@@ -10,7 +10,6 @@ from PIL import Image
 from torch.utils.data import Dataset
 # If you get rid of AutoProcessor, the code dosen't work.
 from transformers import AutoProcessor
-from .train import rank0_print
 
 from .params import DataArguments
 
@@ -35,7 +34,7 @@ class LazySupervisedDataset(Dataset):
         else:
             list_data_dict = data_path
 
-        rank0_print("Formatting inputs...Skip in lazy mode")
+        # rank0_print("Formatting inputs...Skip in lazy mode")
         self.processor = processor
         self.list_data_dict = list_data_dict
         self.data_args = data_args
@@ -150,7 +149,6 @@ def llava_to_openai(data):
         transformed_data.append(transformed_entry)
 
     return transformed_data
-
 
 def make_supervised_data_module(processor, data_args):
     """Make dataset and collator for supervised fine-tuning."""

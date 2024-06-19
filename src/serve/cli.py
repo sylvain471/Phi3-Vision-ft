@@ -6,10 +6,9 @@ import requests
 from io import BytesIO
 import argparse
 import warnings
-from ..utils import load_pretrained_model
+from src.utils import load_pretrained_model, get_model_name_from_path, disable_torch_init
 
 warnings.filterwarnings("ignore")
-
 
 DEFAULT_IMAGE_TOKEN = "<|image_1|>"
 
@@ -47,23 +46,22 @@ def load_image(image_file):
     return image
 
 def main(args):
+
+    # Model
+    disable_torch_init()
+
+    model_name = get_model_name_from_path(args.model_path)
     
     use_flash_attn = True
 
     if args.disable_flash_attention:
         use_flash_attn = False
 
-    if args.model_path:
-        processor, model = load_pretrained_model(model_path = args.model_path, device_map=args.device, 
-                                                 load_4bit=args.load_4bit, load_8bit=args.load_8bit,
-                                                 device=args.device, use_flash_attn=use_flash_attn
-        )
-
-    else:
-        processor, model = load_pretrained_model(model_base=args.model_base, device_map=args.device, 
-                                                 load_4bit=args.load_4bit, load_8bit=args.load_8bit,
-                                                 device=args.device, use_flash_attn=use_flash_attn
-        )
+    processor, model = load_pretrained_model(model_path = args.model_path, model_base=args.model_base, 
+                                             model_name=model_name, device_map=args.device, 
+                                             load_4bit=args.load_4bit, load_8bit=args.load_8bit,
+                                             device=args.device, use_flash_attn=use_flash_attn
+    )
 
     messages = [
     # {"role": "system", "content": "You are an AI assistant monitoring traffic situations through surveillance systems to support drivers in emergency situations."},
