@@ -1,4 +1,4 @@
-deepspeed --master_port 29600 train.py \
+deepspeed --master_port 29600 src/training/train.py \
     --lora_enable True \
     --lora_namespan_exclude "['lm_head']" \
     --lora_rank 128 \

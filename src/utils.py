@@ -1,9 +1,7 @@
-from transformers import AutoProcessor, BitsAndBytesConfig
+from phi3_vision import Phi3VForCausalLM, Phi3VConfig, Phi3VProcessor
 from peft import PeftModel
-from model.modeling_phi3_v import Phi3VForCausalLM, Phi3VConfig
-from model.processing_phi3_v import Phi3VProcessor
 import torch
-import os
+from transformers import BitsAndBytesConfig
 import warnings
 
 # This code is borrowed from LLaVA

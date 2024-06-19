@@ -6,7 +6,7 @@ import requests
 from io import BytesIO
 import argparse
 import warnings
-from utils import load_pretrained_model
+from ..utils import load_pretrained_model
 
 warnings.filterwarnings("ignore")
 
