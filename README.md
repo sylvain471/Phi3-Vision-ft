@@ -8,13 +8,24 @@ This repository contains a script for training the [Phi3-Vision model](https://h
 
 ## Table of Contents
 
-- [Installation](#installation)
-  - [Using `requirements.txt`](#using-requirementstxt)
-  - [Using `environment.yaml`](#using-environmentyaml)
-- [Model Download](#model-download)
-- [Dataset Preparation](#dataset-preparation)
-- [Training](#training)
-- [Inference](#inference)
+- [Fine-tuning Phi3-Vision](#fine-tuning-phi3-vision)
+  - [Table of Contents](#table-of-contents)
+  - [Supported Features](#supported-features)
+  - [Installation](#installation)
+    - [Using `requirements.txt`](#using-requirementstxt)
+    - [Using `environment.yaml`](#using-environmentyaml)
+  - [Model Download](#model-download)
+  - [Dataset Preparation](#dataset-preparation)
+  - [Training](#training)
+    - [Full Finetuning](#full-finetuning)
+    - [Finetune with LoRA](#finetune-with-lora)
+      - [Merge LoRA Weights](#merge-lora-weights)
+  - [Inference](#inference)
+    - [CLI Inference](#cli-inference)
+  - [TODO](#todo)
+  - [License](#license)
+  - [Citation](#citation)
+  - [Acknowledgement](#acknowledgement)
 
 ## Supported Features
 
@@ -35,6 +46,7 @@ Install the required packages using either `requirements.txt` or `environment.ym
 
 ```bash
 pip install -r requirements.txt
+pip install flash-attn --no-build-isolation
 ```
 
 ### Using `environment.yaml`
@@ -42,7 +54,10 @@ pip install -r requirements.txt
 ```bash
 conda env create -f environment.yaml
 conda activate phi3v
+pip install flash-attn --no-build-isolation
 ```
+
+**Note:** You should install the `flash-attn` after running other libraries with `requirements.txt` or `environment.yaml`.
 
 ## Model Download
 
