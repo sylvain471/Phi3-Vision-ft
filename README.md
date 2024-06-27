@@ -2,6 +2,10 @@
 
 This repository contains a script for training the [Phi3-Vision model](https://huggingface.co/microsoft/Phi-3-vision-128k-instruct).
 
+## Update
+
+- [2024/06/27] Supports saving the model into safetensor.
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -158,7 +162,8 @@ bash scripts/finetune_lora.sh
 python src/merge_lora_weights.py \
     --model-path /Your/path/to/saved/weights \
     --model-base microsoft/Phi-3-vision-128k-instruct \
-    --save-model-path /Your/path/to/save
+    --save-model-path /Your/path/to/save \
+    --safe-serialization
 ```
 
 **Note:** Remember to replace the paths in `finetune.sh` or `finetune_lora.sh` with your specific paths.
@@ -177,6 +182,7 @@ You can set some other generation configs like `repetition_penalty`, `temperatur
 
 ## TODO
 
+- [x] Saving in safetensor
 - [ ] Setting different learning rate for `img_projector` and `vision_model`
 - [ ] Demo with WebUI
 - [ ] Save to safe_tensor format
