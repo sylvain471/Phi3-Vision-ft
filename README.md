@@ -8,24 +8,17 @@ This repository contains a script for training the [Phi3-Vision model](https://h
 
 ## Table of Contents
 
-- [Fine-tuning Phi3-Vision](#fine-tuning-phi3-vision)
-  - [Table of Contents](#table-of-contents)
-  - [Supported Features](#supported-features)
-  - [Installation](#installation)
-    - [Using `requirements.txt`](#using-requirementstxt)
-    - [Using `environment.yaml`](#using-environmentyaml)
-  - [Model Download](#model-download)
-  - [Dataset Preparation](#dataset-preparation)
-  - [Training](#training)
-    - [Full Finetuning](#full-finetuning)
-    - [Finetune with LoRA](#finetune-with-lora)
-      - [Merge LoRA Weights](#merge-lora-weights)
-  - [Inference](#inference)
-    - [CLI Inference](#cli-inference)
-  - [TODO](#todo)
-  - [License](#license)
-  - [Citation](#citation)
-  - [Acknowledgement](#acknowledgement)
+- [Installation](#installation)
+  - [Using `requirements.txt`](#using-requirementstxt)
+  - [Using `environment.yaml`](#using-environmentyaml)
+- [Model Download](#model-download)
+- [Dataset Preparation](#dataset-preparation)
+- [Training](#training)
+  - [Full Finetuning](#full-finetuning)
+  - [Finetune with LoRA](#finetune-with-lora)
+    - [Merge LoRA Weights](#merge-lora-weights)
+- [Inference](#inference)
+  - [CLI Inference](#cli-inference)
 
 ## Supported Features
 
