@@ -16,7 +16,6 @@ from .params import DataArguments
 IMAGE_TOKEN_INDEX = -200
 IGNORE_INDEX = -100
 LLaVA_IMAGE_TOKEN = "<image>"
-DEFAULT_IMAGE_TOKEN = "<|image_1|>"
 
 class LazySupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
@@ -137,14 +136,28 @@ class DataCollatorForSupervisedDataset(object):
         return batch
     
 
-def llava_to_openai(data):
+def replace_image_tokens(input_string, start_count=1):
+    count = start_count
+
+    if LLaVA_IMAGE_TOKEN not in input_string:
+        return input_string, count
+
+    while LLaVA_IMAGE_TOKEN in input_string:
+        input_string = input_string.replace(LLaVA_IMAGE_TOKEN, f"<|image_{count}|>", 1)
+        count += 1
+
+    return input_string, count
+
+def llava_to_openai(conversations):
     role_mapping = {"human": "user", "gpt": "assistant"}
 
     transformed_data = []
-    for entry in data:
+    image_count = 1  # Initialize image count here
+    for conversation in conversations:
+        transformed_content, image_count = replace_image_tokens(conversation["value"], image_count)
         transformed_entry = {
-            "role": role_mapping.get(entry["from"], entry["from"]),
-            "content": entry["value"].replace(LLaVA_IMAGE_TOKEN, DEFAULT_IMAGE_TOKEN),
+            "role": role_mapping.get(conversation["from"], conversation["from"]),
+            "content": transformed_content,
         }
         transformed_data.append(transformed_entry)
 

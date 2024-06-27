@@ -4,6 +4,7 @@ This repository contains a script for training the [Phi3-Vision model](https://h
 
 ## Update
 
+- [2024/06/27] 🔥Supports multi-image training and inference.
 - [2024/06/27] Supports saving the model into safetensor.
 
 ## Table of Contents
@@ -22,14 +23,13 @@ This repository contains a script for training the [Phi3-Vision model](https://h
 
 ## Supported Features
 
-- Flexible selection of LoRA target modules
 - Deepspeed
-- Gradient checkpointing
-- LoRA
-- QLoRA
-- Disable/enable Flash Attention 2
-- Finetuning `img_projector` and `vision_tower` simultaneously
+- LoRA, QLoRA
+- Flexible selection of LoRA target modules
 - Full-finetuning
+- Finetuning `img_projector` and `vision_tower`
+- Disable/enable Flash Attention 2
+- Multi-image training and inference
 
 ## Installation
 
@@ -70,7 +70,9 @@ huggingface-cli download microsoft/Phi-3-vision-128k-instruct --local-dir Phi-3-
 
 ## Dataset Preparation
 
-The script requires a dataset formatted according to the LLaVA specification. The dataset should be a JSON file where each entry contains information about conversations and images. Ensure that the image paths in the dataset match the provided `--image_folder`.
+The script requires a dataset formatted according to the LLaVA specification. The dataset should be a JSON file where each entry contains information about conversations and images. Ensure that the image paths in the dataset match the provided `--image_folder`.<br>
+
+**When using multi-image dataset, the image tokens should all be `<image>`.**
 
 <details>
 <summary>Example Dataset</summary>
@@ -191,9 +193,9 @@ You can set some other generation configs like `repetition_penalty`, `temperatur
 ## TODO
 
 - [x] Saving in safetensor
-- [ ] Setting different learning rate for `img_projector` and `vision_model`
+- [x] Supporting multi-image training and inference.
 - [ ] Demo with WebUI
-- [ ] Save to safe_tensor format
+- [ ] Setting different learning rate for `img_projector` and `vision_model`
 
 ## License
 

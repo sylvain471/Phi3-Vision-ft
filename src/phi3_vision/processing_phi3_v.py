@@ -165,9 +165,11 @@ class Phi3VProcessor(ProcessorMixin):
                 parts.append(index[1])
                 start = index[0] + sep_len[index[1]]
             return parts
-
-        def split_with_roles(input_text):
-            parts = split_with_separators(input_text, ["<|user|>\n", "<|end|>\n", "<|assistant|>\n", "<|image_1|>"])
+        
+        def split_with_roles(input_text, image_tags):
+            separtors = ["<|user|>\n", "<|end|>\n", "<|assistant|>\n"] + image_tags
+            parts = split_with_separators(input_text, separtors)
+            # parts = split_with_separators(input_text, ["<|user|>\n", "<|end|>\n", "<|assistant|>\n", "<|image_1|>"])
             new_parts = []
             current_role = None
             for p in parts:
@@ -205,18 +207,9 @@ class Phi3VProcessor(ProcessorMixin):
             labels = [-100]
             for chunk in label_prompt_chunks:
                 labels.extend(chunk)
-            # input_ids = [1]
-            # for chunk in prompt_chunks:
-            #     input_ids.extend(chunk)
 
             labels = torch.tensor(labels, dtype=torch.long).unsqueeze(0)
-            # with open('tmp/input_ids.txt', 'w') as f:
-            #     print(texts, file=f)
-            #     print(split_with_roles(texts), file=f)
-            #     print("input_ids_before", file=f)
-            #     print(model_inputs['input_ids'][0].tolist(), file=f)
-            #     print("input_ids", file=f)
-            #     print(input_ids, file=f)
+
             assert labels.shape[1] == model_inputs['input_ids'].shape[1], f"labels length: {labels.shape[1]}, input_ids length: {model_inputs['input_ids'].shape[1]}"
             return BatchFeature(data={**model_inputs, "labels": labels})
 
@@ -247,14 +240,14 @@ class Phi3VProcessor(ProcessorMixin):
 
         prompt_chunks = []
         label_prompt_chunks = []
-        for chunk in split_with_roles(texts):
-            print(chunk)
+        for chunk in split_with_roles(texts, image_tags):
             if chunk["role"] == "assistant" and chunk['type'] in [0, 3]:
                 tmp_input_ids = self.tokenizer(chunk["content"], add_special_tokens=False).input_ids
                 prompt_chunks.append(tmp_input_ids)
                 label_prompt_chunks.append(tmp_input_ids)
             else:
-                if chunk["content"] == "<|image_1|>":
+                # if chunk["content"] == "<|image_1|>":
+                if chunk["content"] in image_tags:
                     tmp_input_ids = image_ids_pad.pop(0)
                 else:
                     tmp_input_ids = self.tokenizer('\n' + chunk["content"], add_special_tokens=False).input_ids[2:]
