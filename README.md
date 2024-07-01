@@ -178,6 +178,15 @@ python src/merge_lora_weights.py \
 
 **Note:** Remember to replace the paths in `finetune.sh` or `finetune_lora.sh` with your specific paths.
 
+#### Issue for libcudnn error
+
+```
+Could not load library libcudnn_cnn_train.so.8. Error: /usr/local/cuda-12.1/lib/libcudnn_cnn_train.so.8: undefined symbol: _ZN5cudnn3cnn34layerNormFwd_execute_internal_implERKNS_7backend11VariantPackEP11CUstream_stRNS0_18LayerNormFwdParamsERKNS1_20NormForwardOperationEmb, version libcudnn_cnn_infer.so.8
+```
+
+You could run `unset LD_LIBRARY_PATH` for this error.
+You could see this [issue](https://github.com/andimarafioti/florence2-finetuning/issues/2)
+
 ## Inference
 
 ### CLI Inference
@@ -221,7 +230,7 @@ If you find this repository useful in your project, please consider giving a :st
   year = {2024},
   publisher = {GitHub},
   url = {https://github.com/2U1/Phi3-Vision-ft},
-  note = {GitHub repository, forked from \cite{phi3vfinetuning2023}},
+  note = {GitHub repository, forked and developed from \cite{phi3vfinetuning2023}},
 }
 ```
 
