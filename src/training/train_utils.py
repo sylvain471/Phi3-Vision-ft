@@ -56,10 +56,16 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer,
                                    output_dir: str):
     """Collects the state dict and dump to disk."""
 
-    if trainer.deepspeed:
-        torch.cuda.synchronize()
-        trainer.save_model(output_dir)
-        return
+    # if trainer.deepspeed:
+    #     from accelerate import Accelerator
+    #     accelerator = Accelerator()
+    #     accelerator.wait_for_everyone()
+    #     torch.cuda.synchronize()
+    #     # trainer.save_model(output_dir)
+    #     accelerator.save(trainer.model, output_dir, max_shard_size = '5GB')
+    #     trainer.model.config.save_pretrained(output_dir)
+    #     trainer.processor.save_pretrained(output_dir)
+    #     return
 
     state_dict = trainer.model.state_dict()
     if trainer.args.should_save:
@@ -69,3 +75,4 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer,
         }
         del state_dict
         trainer._save(output_dir, state_dict=cpu_state_dict)  # noqa
+        trainer.model.config.save_pretrained(output_dir)

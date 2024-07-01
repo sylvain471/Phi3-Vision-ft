@@ -21,4 +21,4 @@ deepspeed src/training/train.py \
     --gradient_checkpointing True \
     --report_to wandb \
     --lazy_preprocess True \
-    --dataloader_num_workers 4 2>&1 | tee logs/$(date +"%Y-%m-%d_%H_%M").log
+    --dataloader_num_workers 4

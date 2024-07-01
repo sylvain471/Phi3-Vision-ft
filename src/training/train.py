@@ -43,7 +43,8 @@ def train():
     
     model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
-    training_args.lora_namespan_exclude = ast.literal_eval(training_args.lora_namespan_exclude)
+    if training_args.lora_enable:
+        training_args.lora_namespan_exclude = ast.literal_eval(training_args.lora_namespan_exclude)
 
     local_rank = training_args.local_rank
     compute_dtype = (torch.float16 if training_args.fp16 else (torch.bfloat16 if training_args.bf16 else torch.float32))
@@ -91,7 +92,6 @@ def train():
     if training_args.gradient_checkpointing:
         model.enable_input_require_grads()
         training_args.gradient_checkpointing_kwargs = {"use_reentrant": False}
-        rank0_print("Gradient checkpointing:", model.model.gradient_checkpointing)
 
     if training_args.lora_enable:
         lora_namespan_exclude = training_args.lora_namespan_exclude
