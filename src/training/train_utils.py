@@ -56,6 +56,10 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer,
                                    output_dir: str):
     """Collects the state dict and dump to disk."""
 
+    # Due to the limited GPU resources, I have not been able to fully debug for full fine-tuning.
+    # If any issues arise, please reprot them in the issues section of the repository.
+    # I will try to fix them as soon as possible.
+
     # if trainer.deepspeed:
     #     from accelerate import Accelerator
     #     accelerator = Accelerator()
