@@ -35,22 +35,14 @@ This repository contains a script for training the [Phi3-Vision model](https://h
 
 Install the required packages using either `requirements.txt` or `environment.yml`.
 
-### Using `requirements.txt`
+### Using `requirements.txt` with [UV](https://github.com/astral-sh/uv) environment manager
 
 ```bash
-pip install -r requirements.txt
-pip install flash-attn --no-build-isolation
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+uv pip install flash-attn
 ```
-
-### Using `environment.yaml`
-
-```bash
-conda env create -f environment.yaml
-conda activate phi3v
-pip install flash-attn --no-build-isolation
-```
-
-**Note:** You should install the `flash-attn` after running other libraries with `requirements.txt` or `environment.yaml`.
 
 ## Model Download
 
