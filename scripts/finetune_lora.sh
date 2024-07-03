@@ -9,8 +9,8 @@ deepspeed src/training/train.py \
     --num_lora_modules -1 \
     --deepspeed scripts/zero3.json \
     --model_id microsoft/Phi-3-vision-128k-instruct \
-    --data_path /home/workspace/description/traffic_158k.json \
-    --image_folder /home/workspace/dataset \
+    --data_path ./data.json \
+    --image_folder ./img \
     --tune_img_projector True \
     --freeze_vision_tower True \
     --bf16 True \

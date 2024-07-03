@@ -45,8 +45,8 @@ from transformers.utils import (
     logging,
     replace_return_docstrings,
 )
-from .configuration_phi3_v import Phi3VConfig
-from .image_embedding_phi3_v import Phi3ImageEmbedding
+from configuration_phi3_v import Phi3VConfig
+from image_embedding_phi3_v import Phi3ImageEmbedding
 
 
 logger = logging.get_logger(__name__)

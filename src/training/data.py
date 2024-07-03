@@ -11,7 +11,7 @@ from torch.utils.data import Dataset
 # If you get rid of AutoProcessor, the code dosen't work.
 from transformers import AutoProcessor
 
-from .params import DataArguments
+from params import DataArguments
 
 IMAGE_TOKEN_INDEX = -200
 IGNORE_INDEX = -100

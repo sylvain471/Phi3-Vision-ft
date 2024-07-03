@@ -29,7 +29,7 @@ from transformers.image_utils import ImageInput
 from transformers.processing_utils import ProcessorMixin
 from transformers.tokenization_utils_base import PaddingStrategy, TextInput, TruncationStrategy
 from transformers.utils import TensorType
-from .image_processing_phi3_v import Phi3VImageProcessor
+from image_processing_phi3_v import Phi3VImageProcessor
 transformers.Phi3VImageProcessor = Phi3VImageProcessor
 
 class Phi3VProcessor(ProcessorMixin):

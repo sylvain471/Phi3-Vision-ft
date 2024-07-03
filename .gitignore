@@ -171,3 +171,9 @@ logs/*.log
 testing.ipynb
 
 convert_gguf
+
+img/
+prepare_data.ipynb
+data.json
+
+wandb

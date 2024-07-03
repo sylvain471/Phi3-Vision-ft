@@ -7,11 +7,17 @@ import ast
 from transformers import AutoProcessor, BitsAndBytesConfig
 import sys
 
-from phi3_vision import Phi3VForCausalLM, Phi3VConfig, Phi3VProcessor
-from training.trainer import Phi3VTrainer
-from training.data import make_supervised_data_module
-from training.params import DataArguments, ModelArguments, TrainingArguments
-from training.train_utils import get_peft_state_maybe_zero_3, get_peft_state_non_lora_maybe_zero_3, safe_save_model_for_hf_trainer
+#from phi3_vision import Phi3VForCausalLM, Phi3VConfig, Phi3VProcessor
+
+from configuration_phi3_v import Phi3VConfig
+from modeling_phi3_v import Phi3VForCausalLM
+from processing_phi3_v import Phi3VProcessor
+#from image_embedding_phi3_v import Phi3ImageEmbedding
+
+from trainer import Phi3VTrainer
+from data import make_supervised_data_module
+from params import DataArguments, ModelArguments, TrainingArguments
+from train_utils import get_peft_state_maybe_zero_3, get_peft_state_non_lora_maybe_zero_3, safe_save_model_for_hf_trainer
 
 local_rank = None
 
