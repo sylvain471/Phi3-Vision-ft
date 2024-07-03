@@ -273,11 +273,16 @@ class Phi3ImageEmbedding(nn.Module):
             select = True
         # It's a hacky way to walkaround the hang-out problem when deepspeed `zero3` is used
         # and the training batch is a mixture of pure text and vision-language data.
-        else:
-            num_pure_text = input_ids.shape[0]
-            self.get_img_features(img_embeds.flatten(0, 1))
-        for _ in range(num_pure_text):
-            self.img_projection(torch.zeros(1, 1921, 4096, device=self.img_processor.device, dtype=self.img_processor.dtype))
+
+        # I've commented this because it's always true when genertaing the sequence.
+        # This makes a serious bottleneck.
+        # If someone has an idea of how to fix this, please let me know.
+        
+        # else:
+        #     num_pure_text = input_ids.shape[0]
+        #     self.get_img_features(img_embeds.flatten(0, 1))
+        # for _ in range(num_pure_text):
+        #     self.img_projection(torch.zeros(1, 1921, 4096, device=self.img_processor.device, dtype=self.img_processor.dtype))
         
         with torch.no_grad():
             input_ids.clamp_min_(0).clamp_max_(self.vocab_size)

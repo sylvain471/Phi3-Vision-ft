@@ -210,6 +210,7 @@ You can set some other generation configs like `repetition_penalty`, `temperatur
 ## Known Issues
 
 - [libcudnn issue](#issue-for-libcudnn-error)
+- Does not support text-only dataset.
 
 ## License
 
