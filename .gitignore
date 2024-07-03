@@ -169,3 +169,5 @@ scripts_tmp/
 logs/*.log
 
 testing.ipynb
+
+convert_gguf

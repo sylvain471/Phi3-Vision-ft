@@ -203,8 +203,13 @@ You can set some other generation configs like `repetition_penalty`, `temperatur
 
 - [x] Saving in safetensor
 - [x] Supporting multi-image training and inference.
+- [ ] Converting into gguf format.
 - [ ] Demo with WebUI
 - [ ] Setting different learning rate for `img_projector` and `vision_model`
+
+## Known Issues
+
+- [libcudnn issue](#issue-for-libcudnn-error)
 
 ## License
 

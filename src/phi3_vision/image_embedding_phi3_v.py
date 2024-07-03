@@ -278,6 +278,7 @@ class Phi3ImageEmbedding(nn.Module):
             self.get_img_features(img_embeds.flatten(0, 1))
         for _ in range(num_pure_text):
             self.img_projection(torch.zeros(1, 1921, 4096, device=self.img_processor.device, dtype=self.img_processor.dtype))
+        
         with torch.no_grad():
             input_ids.clamp_min_(0).clamp_max_(self.vocab_size)
         

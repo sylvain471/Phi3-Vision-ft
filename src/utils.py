@@ -1,7 +1,7 @@
 from src.phi3_vision import Phi3VForCausalLM, Phi3VConfig, Phi3VProcessor
 from peft import PeftModel
 import torch
-from transformers import BitsAndBytesConfig
+from transformers import BitsAndBytesConfig, AutoModelForCausalLM, AutoProcessor
 import warnings
 import os
 
@@ -64,7 +64,10 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
 
     else:
         processor = Phi3VProcessor.from_pretrained(model_path)
-        model = Phi3VForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+        # model = Phi3VForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+        # This is a temporary fix for speeding up the inference. The main solution should be fixed in the image_embedding_phi3.py
+        # The part for the pure text part is the bottleneck.
+        model = AutoModelForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
 
     return processor, model
 
